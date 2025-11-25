@@ -1,0 +1,20 @@
+# Ambientes virtuais
+.venv/
+venv/
+
+# Modelos/pesos grandes
+models/
+checkpoints/
+weights/
+*.bin
+*.pt
+*.pth
+*.safetensors
+
+# Cache do HuggingFace
+huggingface/
+.cache/
+
+# Python boilerplate
+__pycache__/
+*.py[cod]
