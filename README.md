@@ -1,6 +1,4 @@
 
-
-````markdown
 # ⚖️ JusCash – Validador de Processos com IA
 
 Projeto do case técnico para vaga de Analista de Machine Learning com foco em IA.
