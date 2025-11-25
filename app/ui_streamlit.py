@@ -4,10 +4,9 @@ from typing import Optional
 import requests
 import streamlit as st
 
-from config import API_BASE_URL  # mantém o mesmo backend
+from config import API_BASE_URL 
 
 
-# ---------- Helpers de API ----------
 
 def check_health() -> bool:
     try:
@@ -65,7 +64,6 @@ def call_validate_process(raw_json: str) -> dict:
     return {"ok": True, "data": data, "error": None}
 
 
-# ---------- UI helpers ----------
 
 def render_header():
     st.set_page_config(
@@ -74,7 +72,7 @@ def render_header():
         layout="wide",
     )
 
-    # “hack” pro set_page_config funcionar em recarga
+    # pro set_page_config funcionar em recarga
     st.markdown(
         """
         <style>
@@ -232,7 +230,7 @@ def render_result_card(result: dict):
 
     st.markdown('<div class="result-card">', unsafe_allow_html=True)
 
-    # Linha 1 – decisão + badge
+    # linha 1 – decisão + badge
     cols = st.columns([0.4, 0.6])
     with cols[0]:
         st.markdown('<div class="result-title">Decisão do modelo</div>', unsafe_allow_html=True)
@@ -241,7 +239,7 @@ def render_result_card(result: dict):
         st.markdown('<div class="small-label">Resumo da decisão</div>', unsafe_allow_html=True)
         st.write(rationale or "Sem justificativa retornada.")
 
-    # Linha 2 – citações de políticas
+    # linha 2 – citações de políticas
     st.markdown("---")
     st.markdown('<div class="small-label">Regras aplicadas (citadas)</div>', unsafe_allow_html=True)
     if citacoes:
@@ -250,7 +248,7 @@ def render_result_card(result: dict):
     else:
         st.write("Nenhuma regra específica citada pelo modelo.")
 
-    # Linha 3 – metadados técnicos
+    # linha 3 – metadados técnicos
     st.markdown("---")
     meta_cols = st.columns(3)
     with meta_cols[0]:
@@ -304,7 +302,7 @@ def main():
     render_header()
     render_sidebar()
 
-    # Layout principal em duas colunas
+    # layout principal
     col_input, col_output = st.columns([0.55, 0.45])
 
     with col_input:

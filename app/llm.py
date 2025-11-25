@@ -1,4 +1,3 @@
-# app/hf_llm.py
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from langchain_huggingface import HuggingFacePipeline
 import torch
@@ -8,9 +7,9 @@ from .config import LOCAL_LLM_MODEL
 
 def build_local_llm(model_name: str | None = None) -> HuggingFacePipeline:
     """
-    Cria um LLM local usando HuggingFace + LangChain em modo causal (text-generation).
+    Cria um LLM local usando HuggingFace + LangChain em text-generation.
 
-    Default: google/gemma-2b-it (modelo instruct, melhor para seguir prompts e JSON).
+    google/gemma-2b-it
     """
     model_name = model_name or LOCAL_LLM_MODEL
 
@@ -25,7 +24,7 @@ def build_local_llm(model_name: str | None = None) -> HuggingFacePipeline:
         task="text-generation",
         model=model,
         tokenizer=tokenizer,
-        max_new_tokens=256,   # suficiente para o JSON + justificativa
+        max_new_tokens=256,   # suficiente
         do_sample=False,
         return_full_text=False,
     )

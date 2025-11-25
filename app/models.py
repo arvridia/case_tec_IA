@@ -1,4 +1,3 @@
-# app/models.py
 from datetime import datetime
 from typing import List, Optional, Literal
 from pydantic import BaseModel
@@ -26,7 +25,7 @@ class Processo(BaseModel):
     segredoJustica: bool
     justicaGratuita: bool
     siglaTribunal: str
-    esfera: str  # "Federal", "Estadual", "Trabalhista", etc.
+    esfera: str
     valorCondenacao: Optional[float] = None
 
     documentos: List[Documento]

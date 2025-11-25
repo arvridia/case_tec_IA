@@ -1,4 +1,3 @@
-# app/rag.py
 from typing import List
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS

@@ -1,4 +1,3 @@
-# app/decision_service.py
 import json
 from typing import List
 
@@ -15,7 +14,7 @@ from langsmith import traceable
 
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "default"
-#MAX_PROMPT_CHARS = 1500
+
 
 def summarize_processo(processo: Processo) -> str:
     """
@@ -23,7 +22,7 @@ def summarize_processo(processo: Processo) -> str:
     e também no prompt do LLM.
     """
     doc_nomes = [d.nome for d in processo.documentos]
-    mov_descs = [m.descricao for m in processo.movimentos]  # primeiros 5
+    mov_descs = [m.descricao for m in processo.movimentos]  # podemos limitar o tamanho aqui [:5]
 
     lines = [
         f"Número do processo: {processo.numeroProcesso}",
@@ -77,11 +76,11 @@ NÃO mostre exemplo.
 
 class DecisionEngine:
     def __init__(self, llm=None, retriever=None):
-        # LLM local (HuggingFace)
+        # llm local
         self.llm = llm or build_local_llm()
-        # Retriever de políticas (LangChain + FAISS)
+        # faiss retriever
         self.retriever = retriever or build_policy_retriever()
-        # Template de prompt (LangChain)
+        # langchain
         self.prompt = PromptTemplate(
             input_variables=["policy_context", "process_summary"],
             template=DECISION_PROMPT,
@@ -91,14 +90,10 @@ class DecisionEngine:
         """
         Usa o RAG para buscar as políticas mais relevantes
         e montar um contexto textual para o LLM.
-        Funciona tanto com retrievers antigos (get_relevant_documents)
-        quanto com retrievers novos (invoke).
         """
-        # Compatível com diferentes versões do LangChain
         if hasattr(self.retriever, "get_relevant_documents"):
             docs = self.retriever.get_relevant_documents(process_summary)
         else:
-            # Em versões novas, retriever é um Runnable
             docs = self.retriever.invoke(process_summary)
 
         parts: List[str] = []
@@ -132,7 +127,7 @@ class DecisionEngine:
         ):
             decision = "rejected"
         else:
-            # se não achar nada, assume incomplete por segurança
+            # se não achar nada, assume incomplete por seguranca
             decision = "incomplete"
 
         # citacoes POL-x
@@ -141,8 +136,8 @@ class DecisionEngine:
         if not citacoes:
             citacoes = []
 
-        # rationale: texto completo, mas limitado
         rationale = text
+        # limitar verbosity
         #if len(rationale) > 400:
         #    rationale = rationale[:400] + "..."
 
@@ -160,7 +155,7 @@ class DecisionEngine:
         1) interpretar como JSON (primeiro objeto);
         2) se não houver JSON, usa fallback heurístico.
         """
-        # trata saídas claramente inválidas como vazias
+        # trata saídas claramente invalidas como vazias
         if raw_text in {"```", "``", "`", "**"}:
             raw_text = ""
 
@@ -174,14 +169,14 @@ class DecisionEngine:
 
         decoder = json.JSONDecoder()
 
-        # 1) tentar ler JSON desde o início
+        # tentar ler JSON desde o inicio
         try:
             obj, _ = decoder.raw_decode(raw_text)
             return obj
         except JSONDecodeError:
             pass
 
-        # 2) procurar primeiro '{' e tentar a partir dali
+        # procurar primeiro '{' e tentar a partir dali
         start = raw_text.find("{")
         if start != -1:
             try:
@@ -190,7 +185,7 @@ class DecisionEngine:
             except JSONDecodeError:
                 pass
 
-        # 3) se não tem '{' nenhum ou não deu pra parsear -> heurística
+        # se nao tem '{' nenhum ou sem parse -> heurística
         return DecisionEngine._heuristic_from_text(raw_text)
 
 
@@ -212,16 +207,13 @@ class DecisionEngine:
             process_summary=process_summary,
         )
         
-        # 🔹 GARANTIR que o Flan-T5 não vai estourar o limite de contexto
+        # impedir estouro de contexto
         
         #if len(prompt_str) > MAX_PROMPT_CHARS:
         #    prompt_str = prompt_str[:MAX_PROMPT_CHARS]
 
         raw_output = self.llm.invoke(prompt_str)
-        # 👇 debug aqui
-        print("\n================ RAW OUTPUT DO MODELO ================")
-        print(raw_output)
-        print("=====================================================\n")
+
         data = self._parse_json_output(raw_output)
 
         return DecisionResult(

@@ -1,4 +1,3 @@
-# app/api.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -15,7 +14,7 @@ app = FastAPI(
     description="API para validação de processos judiciais com IA (RAG + LLM local).",
 )
 
-# CORS simples (para UI em outra porta)
+# CORS simples 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # em prod, restringir
@@ -24,7 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# instancia única do engine
+# instancia engine
 decision_engine = DecisionEngine()
 
 
