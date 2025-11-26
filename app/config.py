@@ -2,7 +2,8 @@ import os
 from huggingface_hub import login
 
 # URL do streamlit
-API_BASE_URL: str = os.getenv("API_BASE_URL", "http://localhost:8000")
+API_BASE_URL: str = os.getenv("API_BASE_URL", "http://127.0.0.1:8000")
+
 
 HF_TOKEN = os.getenv("HUGGINGFACE_TOKEN")
 login(token=HF_TOKEN)
