@@ -6,10 +6,10 @@ import logging, time
 from .models import Processo, DecisionResult
 from .decision_service import DecisionEngine
 
-logger = logging.getLogger("juscash")
+logger = logging.getLogger("jus-validator")
 
 app = FastAPI(
-    title="JusCash Credit Validator",
+    title="Credit Validator",
     version="0.1.0",
     description="API para validação de processos judiciais com IA (RAG + LLM local).",
 )

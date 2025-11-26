@@ -67,7 +67,7 @@ def call_validate_process(raw_json: str) -> dict:
 
 def render_header():
     st.set_page_config(
-        page_title="JusCash – Validação de Processos",
+        page_title="IA – Validação de Processos",
         page_icon="⚖️",
         layout="wide",
     )
@@ -151,7 +151,7 @@ def render_header():
         """
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
           <div>
-            <h1 style="margin-bottom:0.2rem;">⚖️ JusCash – Validador de Processos</h1>
+            <h1 style="margin-bottom:0.2rem;">⚖️ IA – Validador de Processos</h1>
             <p style="margin-top:0; color:#4A5568; font-size:0.95rem;">
               Interface para inspecionar e validar processos judiciais para compra de créditos,
               utilizando políticas internas e modelo de IA.

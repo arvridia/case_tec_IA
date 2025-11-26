@@ -1,7 +1,7 @@
 
-# ⚖️ JusCash – Validador de Processos com IA
+# ⚖️ Validador de Processos com IA
 
-Projeto do case técnico para vaga de Analista de Machine Learning com foco em IA.
+Projeto do case técnico para vaga de Machine Learning com foco em IA.
 
 Sistema que recebe um **JSON de processo judicial** e decide se o crédito é:
 - `approved` – apto para compra,
@@ -56,11 +56,11 @@ streamlit run app/ui_streamlit.py
 ## 🐳 Como rodar com Docker
 
 ```bash
-docker build -t juscash-api .
+docker build -t case_tec-api .
 docker run -p 8000:8000 ^
   -e HUGGINGFACE_TOKEN=hf_seu_token_aqui ^
-  --name juscash-api-container ^
-  juscash-api
+  --name case_tec-api-container ^
+  case_tec-api
 ```
 
 * API: [http://localhost:8000/docs](http://localhost:8000/docs)
