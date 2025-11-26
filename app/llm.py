@@ -9,7 +9,7 @@ def build_local_llm(model_name: str | None = None) -> HuggingFacePipeline:
     """
     Cria um LLM local usando HuggingFace + LangChain em text-generation.
 
-    google/gemma-2b-it
+    google/gemma-2b-it.
     """
     model_name = model_name or LOCAL_LLM_MODEL
 

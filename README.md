@@ -56,12 +56,29 @@ streamlit run app/ui_streamlit.py
 ## 🐳 Como rodar com Docker
 
 ```bash
-docker build -t juscash-case .
-docker run -p 8000:8000 -p 8501:8501 juscash-case
+docker build -t juscash-api .
+docker run -p 8000:8000 ^
+  -e HUGGINGFACE_TOKEN=hf_seu_token_aqui ^
+  --name juscash-api-container ^
+  juscash-api
 ```
 
 * API: [http://localhost:8000/docs](http://localhost:8000/docs)
-* UI: [http://localhost:8501](http://localhost:8501)
+* Healthcheck: [http://localhost:8000/health](http://localhost:8000/health)
+
+A UI em Streamlit não está dentro do container.  
+Para usar a interface localmente apontando para a API em Docker:
+
+1. Suba a API em Docker (como acima).
+2. Rode a UI:
+   ```bash
+   streamlit run app/ui_streamlit.py
+3. Se precisar expor a URL da API e rodar novamente:
+   - Windows PowerShell:
+     ```powershell
+     $env:API_BASE_URL = "http://localhost:8000"
+     ```
+
 
 ---
 
